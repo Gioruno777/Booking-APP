@@ -9,10 +9,13 @@ const createSendToken = (userID: String, req: Request, res: Response) => {
         process.env.JWT_SECRET_KEY as string,
         { expiresIn: '1h' }
     )
+    console.log(req.secure || req.headers['x-forwarded-proto'] === 'https')
+
     res.cookie("auth_token", token, {
         httpOnly: true,
         secure: req.secure || req.headers['x-forwarded-proto'] === 'https',
-        maxAge: 3600000
+        maxAge: 3600000,
+        sameSite: 'none'
     })
 }
 
